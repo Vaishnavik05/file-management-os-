@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fbe9e7; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #444;
+      padding: 20px;
+    }
+    .container {
+      background: linear-gradient(145deg, #ffebe0, #ffccbc); 
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 900px;
+      padding: 40px;
+      text-align: center;
+      transition: transform 0.1s ease;
+    }
+    h2 {
+      font-size: 30px;
+      color: #6f321f; 
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .btn {
+      padding: 15px;
+      font-size: 16px;
+      background-color: #5d4037; 
+      color: #fff; 
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background-color 0.3s, color 0.3s; 
+    }
+    .btn:hover {
+      background-color: #8d6e63; 
+      color: #000; 
+    }
+    .btn:active {
+      background-color: #4e342e; 
+      color: #fff;
+    }
+    .output-container {
+      background-color: #ddb28e; 
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 30px;
+      text-align: left;
+    }
+    .output-container h3 {
+      font-size: 20px;
+      color: #744a21; 
+      margin-bottom: 10px;
+    }
+    #output {
+      font-size: 16px;
+      color: #444;
+      white-space: pre-wrap; 
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      h2 {
+        font-size: 26px;
+      }
+      .btn {
+        font-size: 14px;
+        padding: 12px;
+      }
+      .output-container {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Basic File Management Project</h2>
+    <div class="menu">
+      <button class="btn" onclick="performAction(1)">List all Files and Directories</button>
+      <button class="btn" onclick="promptCreateFile()">Create New File</button>
+      <button class="btn" onclick="promptDeleteFile()">Delete Existing File</button>
+      <button class="btn" onclick="promptRenameFile()">Rename File</button>
+      <button class="btn" onclick="promptSearchFile()">Search Files</button>
+      <button class="btn" onclick="promptFileDetails()">Details of Particular File</button>
+      <button class="btn" onclick="promptViewFileContent()">View Content of File</button>
+      <button class="btn" onclick="promptSortFileContent()">Sort File Content</button>
+      <button class="btn" onclick="promptListFilesByExtension()">List Files by Extension</button>
+      <button class="btn" onclick="promptEncryptFile()">Encrypt File</button>
+      <button class="btn" onclick="promptRemoveBlankSpaces()">Remove Blank Spaces</button>
+      <button class="btn" onclick="promptLastModificationTime()">Display Last Modification Time</button>
+      <button class="btn" onclick="promptCompressFile()">Compress File</button>
+      <button class="btn" onclick="removeDuplicateFiles()">Remove Duplicate Files</button>
+      <button class="btn" onclick="promptCalculateFileSize()">Calculate File Size</button>
+    </div>
+    <div class="output-container">
+      <h3>Output</h3>
+      <div id="output"></div>
+    </div>
+  </div>
+
+  <script>
+    function performAction(action, params = {}) {
+      fetch('/file-manager', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, params })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('output').innerText = data.message;
+      })
+      .catch(error => {
+        document.getElementById('output').innerText = "Error: " + error;
+      });
+    }
+
+    function promptCreateFile() {
+      const fileName = prompt("Enter the name of the new file:");
+      performAction(2, { fileName });
+    }
+
+    function promptDeleteFile() {
+      const fileName = prompt("Enter file name to delete:");
+      performAction(3, { fileName });
+    }
+
+    function promptRenameFile() {
+      const oldFileName = prompt("Enter old file name to rename:");
+      const newFileName = prompt("Enter new file name:");
+      performAction(4, { oldFileName, newFileName });
+    }
+
+    function promptSearchFile() {
+      const fileName = prompt("Enter file name to search:");
+      performAction(5, { fileName });
+    }
+
+    function promptFileDetails() {
+      const fileName = prompt("Enter file name to get details:");
+      performAction(6, { fileName });
+    }
+
+    function promptViewFileContent() {
+      const fileName = prompt("Enter file name to view content:");
+      performAction(7, { fileName });
+    }
+
+    function promptSortFileContent() {
+      const fileName = prompt("Enter file name to sort content:");
+      performAction(8, { fileName });
+    }
+
+    function promptListFilesByExtension() {
+      const extension = prompt("Enter file extension (e.g., .txt):");
+      performAction(9, { extension });
+    }
+
+    function promptEncryptFile() {
+      const fileName = prompt("Enter file name to encrypt:");
+      performAction(10, { fileName });
+    }
+
+    function promptRemoveBlankSpaces() {
+      const fileName = prompt("Enter file name to remove blank spaces:");
+      performAction(11, { fileName });
+    }
+
+    function promptLastModificationTime() {
+      const fileName = prompt("Enter file name to display last modification time:");
+      performAction(12, { fileName });
+    }
+
+    function promptCompressFile() {
+      const fileName = prompt("Enter file name to compress:");
+      performAction(13, { fileName });
+    }
+
+    function removeDuplicateFiles() {
+      performAction(14);
+    }
+
+    function promptCalculateFileSize() {
+      const filePath = prompt("Enter the path of the file to calculate size:");
+      if (filePath) {
+        performAction(15, { filePath });
+      } else {
+        alert("File path is required.");
+      }
+    }
+  </script>
+</body>
+</html>
